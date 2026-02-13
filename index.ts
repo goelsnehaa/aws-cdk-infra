@@ -243,7 +243,7 @@ export class InfraStack extends cdk.Stack {
             ],
             resources: [`arn:aws:codebuild:${this.region}:${this.account}:project/sle-${environment}-*`],
         }));
-
+        
         infraCodePipelineExecutionRole.addToPolicy(new iam.PolicyStatement({
             sid: 'CodePipelineAccess',
             actions: [
@@ -254,6 +254,16 @@ export class InfraStack extends cdk.Stack {
                 'codepipeline:GetPipeline',
             ],
             resources: [`arn:aws:codepipeline:${this.region}:${this.account}:sle-${environment}-*`],
+        }));
+
+        infraCodePipelineExecutionRole.addToPolicy(new iam.PolicyStatement({
+            sid: 'SSMParameterStoreAccess',
+            actions: [
+                'ssm:GetParameter',
+                'ssm:PutParameter',
+                'ssm:DeleteParameter',
+            ],
+            resources: [`arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap*`],
         }));
 
         // Infra Pipeline
