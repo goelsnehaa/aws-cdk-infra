@@ -299,7 +299,7 @@ export class InfraStack extends cdk.Stack {
                             changeSetName: `sle-${environment}-infra-changeset`,
                             adminPermissions: false,
                             deploymentRole: infraCodePipelineExecutionRole,  
-                            templatePath: infraBuildOutput.atPath('packaged-template.yaml'),
+                            templatePath: infraBuildOutput.atPath(`sle-infrastructure-${environment}.template.json`),
                             runOrder: 1,
                         }),
                     ],
