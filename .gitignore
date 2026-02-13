@@ -1,0 +1,46 @@
+# Node.js
+node_modules/
+package-lock.json
+yarn.lock
+npm-debug.log*
+*.tgz
+
+# TypeScript
+*.js
+*.d.ts
+!jest.config.js
+!.projenrc.js
+
+# CDK
+cdk.out/
+dist/
+
+# AWS
+.aws/
+aws-exports.js
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Build artifacts
+build/
+dist/
+*.tar.gz
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+temp/

@@ -1,0 +1,41 @@
+version: 0.2
+
+env:
+  variables:
+    PACKAGING_BUCKET: "Value passed by codebuild"
+    ENVIRONMENT: "Value passed by codebuild"
+    PIPELINE_GITHUB_BRANCH: "Value passed by codebuild"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo Installing dependencies
+      - npm ci --silent
+      - aws --version
+
+  build:
+    commands:
+      - echo Packaging CloudFormation template
+      - mkdir -p output
+
+      - |
+        if [ -f infrastructure/template.yaml ]; then
+          aws cloudformation package \
+            --template-file infrastructure/template.yaml \
+            --s3-bucket "$PACKAGING_BUCKET" \
+            --region $AWS_REGION \
+            --output-template-file output/packaged-template.yaml
+        else
+          echo "Resources: {}" > output/packaged-template.yaml
+        fi
+
+      - echo "{\"Environment\": \"$ENVIRONMENT\"}" > output/parameters.json
+
+artifacts:
+  base-directory: output
+  files:
+    - packaged-template.yaml
+    - parameters.json
+  discard-paths: yes
