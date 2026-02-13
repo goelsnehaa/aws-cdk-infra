@@ -12,7 +12,6 @@ phases:
       nodejs: 20
     commands:
       - echo Installing dependencies
-      - npm ci --silent
       - aws --version
 
   build:
