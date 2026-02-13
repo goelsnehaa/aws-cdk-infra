@@ -30,12 +30,8 @@ phases:
           echo "Resources: {}" > output/packaged-template.yaml
         fi
 
-      - |
-        printf '{ "Parameters": { "Environment": "%s" } }' "$ENVIRONMENT" > output/parameters.json
-
 artifacts:
   base-directory: output
   files:
     - packaged-template.yaml
-    - parameters.json
   discard-paths: yes

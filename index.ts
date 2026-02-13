@@ -300,7 +300,6 @@ export class InfraStack extends cdk.Stack {
                             adminPermissions: false,
                             deploymentRole: infraCodePipelineExecutionRole,  
                             templatePath: infraBuildOutput.atPath('packaged-template.yaml'),
-                            templateConfiguration: infraBuildOutput.atPath('parameters.json'),
                             runOrder: 1,
                         }),
                     ],
