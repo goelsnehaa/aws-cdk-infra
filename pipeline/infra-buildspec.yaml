@@ -10,14 +10,16 @@ phases:
       nodejs: 20
     commands:
       - echo Installing dependencies
+      - node -v
       - npm install -g aws-cdk
-      - cdk --version
+      - npm install
+      - npx cdk --version
 
   build:
     commands:
       - echo Synthesizing CDK template
       - mkdir -p output
-      - cdk synth sle-infrastructure-$ENVIRONMENT --output output
+      - npx cdk synth sle-infrastructure-$ENVIRONMENT --output output
 
   post_build:
     commands:
