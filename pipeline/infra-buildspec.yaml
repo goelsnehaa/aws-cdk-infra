@@ -31,7 +31,7 @@ phases:
         fi
 
       - |
-        printf '{ "Environment": "%s" }' "$ENVIRONMENT" > output/parameters.json
+        printf '{ "Parameters": { "Environment": "%s" } }' "$ENVIRONMENT" > output/parameters.json
 
 artifacts:
   base-directory: output
