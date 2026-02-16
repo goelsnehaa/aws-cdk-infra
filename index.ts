@@ -259,7 +259,7 @@ export class InfraStack extends cdk.Stack {
         infraCodePipelineExecutionRole.addToPolicy(new iam.PolicyStatement({
             sid: 'SSMParameterStoreAccess',
             actions: [
-                'ssm:GetParameter',
+                'ssm:GetParameters',
                 'ssm:PutParameter',
                 'ssm:DeleteParameter',
             ],
