@@ -33,7 +33,7 @@ export class InfraStack extends cdk.Stack {
             billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
             deletionProtection: true,
             pointInTimeRecoverySpecification: {
-                pointInTimeRecoveryEnabled: false,
+                pointInTimeRecoveryEnabled: true,
             },
             removalPolicy: cdk.RemovalPolicy.RETAIN,
         });
