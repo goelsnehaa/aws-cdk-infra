@@ -179,6 +179,7 @@ export class InfraStack extends cdk.Stack {
                 'dynamodb:DeleteTable',
                 'dynamodb:TagResource',
                 'dynamodb:UntagResource',
+                'dynamodb:ListTagsOfResource',
                 'dynamodb:UpdateContinuousBackups',
                 'dynamodb:DescribeContinuousBackups',
             ],
@@ -218,6 +219,7 @@ export class InfraStack extends cdk.Stack {
             actions: [
                 'codebuild:StartBuild',
                 'codebuild:BatchGetBuilds',
+                'codebuild:BatchGetProjects',
             ],
             resources: [infraCodeBuildProject.projectArn],
         }));
@@ -266,6 +268,19 @@ export class InfraStack extends cdk.Stack {
             resources: [`arn:aws:ssm:${this.region}:${this.account}:parameter/cdk-bootstrap*`],
         }));
 
+        infraCodePipelineExecutionRole.addToPolicy(new iam.PolicyStatement({
+            sid: 'IAMPermissions',
+            actions: [
+                'iam:PutRolePolicy',
+                'iam:DeleteRolePolicy',
+                'iam:GetRolePolicy',
+                'iam:ListRolePolicies',
+                'iam:AttachRolePolicy',
+                'iam:DetachRolePolicy',
+            ],
+            resources: [`arn:aws:iam::${this.account}:role/sle-infrastructure-${environment}-*`],
+        }));
+
         // Infra Pipeline
         const infraSourceOutput = new codepipeline.Artifact();
         const infraBuildOutput = new codepipeline.Artifact();
@@ -305,10 +320,9 @@ export class InfraStack extends cdk.Stack {
                     actions: [
                         new codepipeline_actions.CloudFormationCreateReplaceChangeSetAction({
                             actionName: 'CreateInfraChangeSet',
-                            stackName: `sle-${environment}-infra-cf`,
+                            stackName: `sle-infrastructure-${environment}`,
                             changeSetName: `sle-${environment}-infra-changeset`,
                             adminPermissions: true,
-                            deploymentRole: infraCodePipelineExecutionRole,  
                             templatePath: infraBuildOutput.atPath(`sle-infrastructure-${environment}.template.json`),
                             runOrder: 1,
                         }),
@@ -328,7 +342,7 @@ export class InfraStack extends cdk.Stack {
                     actions: [
                         new codepipeline_actions.CloudFormationExecuteChangeSetAction({
                             actionName: 'ExecuteInfraChangeSet',
-                            stackName: `sle-${environment}-infra-cf`,
+                            stackName: `sle-infrastructure-${environment}`,
                             changeSetName: `sle-${environment}-infra-changeset`,
                             runOrder: 1,
                         }),
