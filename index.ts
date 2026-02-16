@@ -33,7 +33,7 @@ export class InfraStack extends cdk.Stack {
             billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
             deletionProtection: true,
             pointInTimeRecoverySpecification: {
-                pointInTimeRecoveryEnabled: true,
+                pointInTimeRecoveryEnabled: false,
             },
             removalPolicy: cdk.RemovalPolicy.RETAIN,
         });
@@ -307,7 +307,7 @@ export class InfraStack extends cdk.Stack {
                             actionName: 'CreateInfraChangeSet',
                             stackName: `sle-${environment}-infra-cf`,
                             changeSetName: `sle-${environment}-infra-changeset`,
-                            adminPermissions: false,
+                            adminPermissions: true,
                             deploymentRole: infraCodePipelineExecutionRole,  
                             templatePath: infraBuildOutput.atPath(`sle-infrastructure-${environment}.template.json`),
                             runOrder: 1,
